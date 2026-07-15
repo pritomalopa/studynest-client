@@ -34,9 +34,10 @@ const Explore = () => {
     setLoading(true);
     getResourcesRequest({ search, subject, priceType, resourceType, sort, page, limit: 12 })
       .then((res) => {
-        setResources(res.data);
-        setTotalPages(res.totalPages);
-        setTotalResults(res.totalResults);
+        const payload = Array.isArray(res) ? res : res.data ?? [];
+        setResources(Array.isArray(payload) ? payload : []);
+        setTotalPages(res.totalPages ?? 1);
+        setTotalResults(res.totalResults ?? payload.length);
       })
       .catch(() => setResources([]))
       .finally(() => setLoading(false));
@@ -147,7 +148,7 @@ const Explore = () => {
           </div>
 
           {loading ? (
-            <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-6">
+            <div className="grid sm:grid-cols-2 xl:grid-cols-4 gap-6">
               {Array.from({ length: 6 }).map((_, i) => <SkeletonCard key={i} />)}
             </div>
           ) : resources.length === 0 ? (
@@ -159,7 +160,7 @@ const Explore = () => {
               actionTo="/resources"
             />
           ) : (
-            <div className="grid sm:grid-cols-2 xl:grid-cols-3 gap-6">
+            <div className="grid sm:grid-cols-2 xl:grid-cols-4 gap-6">
               {resources.map((r) => <ResourceCard key={r._id} resource={r} />)}
             </div>
           )}

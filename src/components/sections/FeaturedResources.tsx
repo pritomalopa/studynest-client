@@ -12,7 +12,7 @@ const FeaturedResources = () => {
 
   useEffect(() => {
     getResourcesRequest({ sort: "rating", limit: 4 })
-      .then((res) => setResources(res.data))
+      .then((res) => setResources(Array.isArray(res) ? res : res.data ?? []))
       .catch(() => setResources([]))
       .finally(() => setLoading(false));
   }, []);

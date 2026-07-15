@@ -1,4 +1,4 @@
-import api from "./axios";
+import api, { unwrapApiData } from "./axios";
 import { PaginatedResources, Resource, Review } from "../types";
 
 export interface ResourceFilters {
@@ -15,32 +15,32 @@ export const getResourcesRequest = async (
   filters: ResourceFilters
 ): Promise<PaginatedResources> => {
   const { data } = await api.get("/resources", { params: filters });
-  return data;
+  return unwrapApiData<PaginatedResources>(data);
 };
 
 export const getResourceByIdRequest = async (
   id: string
 ): Promise<{ resource: Resource; related: Resource[]; reviews: Review[] }> => {
   const { data } = await api.get(`/resources/${id}`);
-  return data;
+  return unwrapApiData<{ resource: Resource; related: Resource[]; reviews: Review[] }>(data);
 };
 
 export const getMyResourcesRequest = async (): Promise<Resource[]> => {
   const { data } = await api.get("/resources/mine");
-  return data;
+  return unwrapApiData<Resource[]>(data);
 };
 
 export const createResourceRequest = async (payload: Partial<Resource>): Promise<Resource> => {
   const { data } = await api.post("/resources", payload);
-  return data;
+  return unwrapApiData<Resource>(data);
 };
 
 export const deleteResourceRequest = async (id: string) => {
   const { data } = await api.delete(`/resources/${id}`);
-  return data;
+  return unwrapApiData(data);
 };
 
 export const addReviewRequest = async (id: string, rating: number, comment: string) => {
   const { data } = await api.post(`/resources/${id}/reviews`, { rating, comment });
-  return data;
+  return unwrapApiData(data);
 };

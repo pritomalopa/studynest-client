@@ -7,6 +7,17 @@ const api = axios.create({
   withCredentials: true, // sends the httpOnly JWT cookie
 });
 
+export const unwrapApiData = <T>(payload: unknown): T => {
+  if (payload && typeof payload === "object" && payload !== null && "data" in payload) {
+    const maybeEnvelope = payload as { data?: T };
+    if (typeof maybeEnvelope.data !== "undefined") {
+      return maybeEnvelope.data as T;
+    }
+  }
+
+  return payload as T;
+};
+
 // Fallback: also attach Bearer token from localStorage if present
 // (useful for environments where third-party cookies are blocked)
 api.interceptors.request.use((config) => {

@@ -47,21 +47,27 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const login = async (email: string, password: string) => {
-    const data = await loginRequest(email, password);
-    localStorage.setItem("studynest_token", data.token);
+    const data = await loginRequest(email, password) as { token?: string };
+    if (data.token) {
+      localStorage.setItem("studynest_token", data.token);
+    }
     await refreshUser();
   };
 
   const loginWithGoogle = async () => {
     const idToken = await signInWithGooglePopup();
-    const data = await googleLoginRequest(idToken);
-    localStorage.setItem("studynest_token", data.token);
+    const data = await googleLoginRequest(idToken) as { token?: string };
+    if (data.token) {
+      localStorage.setItem("studynest_token", data.token);
+    }
     await refreshUser();
   };
 
   const register = async (payload: RegisterPayload) => {
-    const data = await registerRequest(payload);
-    localStorage.setItem("studynest_token", data.token);
+    const data = await registerRequest(payload) as { token?: string };
+    if (data.token) {
+      localStorage.setItem("studynest_token", data.token);
+    }
     await refreshUser();
   };
 

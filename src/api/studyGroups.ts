@@ -1,4 +1,4 @@
-import api from "./axios";
+import api, { unwrapApiData } from "./axios";
 import { StudyGroup } from "../types";
 
 export const getStudyGroupsRequest = async (params?: {
@@ -6,27 +6,27 @@ export const getStudyGroupsRequest = async (params?: {
   search?: string;
 }): Promise<StudyGroup[]> => {
   const { data } = await api.get("/study-groups", { params });
-  return data;
+  return unwrapApiData<StudyGroup[]>(data);
 };
 
 export const getStudyGroupByIdRequest = async (id: string): Promise<StudyGroup> => {
   const { data } = await api.get(`/study-groups/${id}`);
-  return data;
+  return unwrapApiData<StudyGroup>(data);
 };
 
 export const createStudyGroupRequest = async (
   payload: Partial<StudyGroup>
 ): Promise<StudyGroup> => {
   const { data } = await api.post("/study-groups", payload);
-  return data;
+  return unwrapApiData<StudyGroup>(data);
 };
 
 export const joinStudyGroupRequest = async (id: string) => {
   const { data } = await api.post(`/study-groups/${id}/join`);
-  return data;
+  return unwrapApiData(data);
 };
 
 export const leaveStudyGroupRequest = async (id: string) => {
   const { data } = await api.post(`/study-groups/${id}/leave`);
-  return data;
+  return unwrapApiData(data);
 };

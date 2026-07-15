@@ -1,4 +1,4 @@
-import api from "./axios";
+import api, { unwrapApiData } from "./axios";
 import { Booking, Tutor } from "../types";
 
 export const getTutorsRequest = async (params?: {
@@ -6,12 +6,12 @@ export const getTutorsRequest = async (params?: {
   maxRate?: number;
 }): Promise<Tutor[]> => {
   const { data } = await api.get("/tutors", { params });
-  return data;
+  return unwrapApiData<Tutor[]>(data);
 };
 
 export const getTutorByIdRequest = async (id: string): Promise<Tutor> => {
   const { data } = await api.get(`/tutors/${id}`);
-  return data;
+  return unwrapApiData<Tutor>(data);
 };
 
 export const bookTutorRequest = async (
@@ -19,7 +19,7 @@ export const bookTutorRequest = async (
   payload: { subject: string; date: string; timeSlot: string }
 ): Promise<Booking> => {
   const { data } = await api.post(`/tutors/${id}/book`, payload);
-  return data;
+  return unwrapApiData<Booking>(data);
 };
 
 export const getMyBookingsRequest = async (): Promise<{
@@ -27,5 +27,5 @@ export const getMyBookingsRequest = async (): Promise<{
   asTutor: Booking[];
 }> => {
   const { data } = await api.get("/tutors/bookings/mine");
-  return data;
+  return unwrapApiData<{ asStudent: Booking[]; asTutor: Booking[] }>(data);
 };
