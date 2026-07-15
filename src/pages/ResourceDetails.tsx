@@ -2,12 +2,10 @@ import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { Download, MapPin, Calendar, FileText, Star } from "lucide-react";
 import { Resource, Review } from "../types";
-import { getResourceByIdRequest } from "../api/resources";
-import { addReviewRequest } from "../api/resources";
+import { getResourceByIdRequest, addReviewRequest } from "../api/resources";
 import { useAuth } from "../context/AuthContext";
 import Badge from "../components/ui/Badge";
 import StarRating from "../components/ui/StarRating";
-import ResourceCard from "../components/ui/ResourceCard";
 
 const ResourceDetails = () => {
   const { id } = useParams();
